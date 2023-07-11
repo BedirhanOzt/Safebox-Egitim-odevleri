@@ -1,0 +1,129 @@
+Stored Procedure Nedir ? (Saklı yordam)
+
+Tekrar kullanılabilirliği sağlayarak istediğimiz kadar çağrı olağı sağlar.(Modülerlik)
+Böylelikle:
+Ağ trafiği azalmasıyla beraber performans artışı
+Daha iyi veri güvenliği sağlar .
+
+
+
+Stored Procedure Oluşturma
+
+
+CREATE PROCEDURE procedure_ismi
+AS
+  sql ifademiz
+GO;
+
+
+
+
+Stored Procedure Çağırma
+
+
+EXEC procedure_ismi;
+
+
+
+
+################################################################################################################################
+
+
+Trigger Nedir Neden Kullanılır ? (Tetikleyici)
+
+
+
+Stored Procedure çok benzetme ancak farkları var . Mesela tablo yapılan herhangi bir işlemi(ekleme,silme,çıkarma)vs işlemler
+yapılıyorsa bunların hesaplarını otomatik bir şekilde yapabilmektedir.
+
+
+Veri bütünlüğünu sağlamak için kullanılır. Veriler üzerinde bir işlem yapıldığında, iş kurallarına uygun 
+gerçekleşip gerçekleşmediği kontrol edilerek hatalı girişlerin yapılması önlenir.
+
+
+Referans bütünlüğünü sağlamak için kullanılır. Bir kullanıcı silindiğinde onunla ilgili 
+satış tablosundaki siparişleri silmek istediğimizde tanımlanır.
+
+
+Trigger oluşturma
+
+
+CREATE TRIGGER trigger_adi
+
+ON tablo_adi
+{FOR|AFTER|INSTEAD OF} {INSERT|UPDATE|DELETE}
+AS
+Begin
+--Sql ifadeler
+End
+
+
+################################################################################################################################
+
+
+Olumlu ve olumsuz etkileri nelerdir ? 
+
+*Stored procedure olumsuz etkileri
+
+
+Taşınabilirlik: Stored procedure'lar bir veritabanından diğerine taşınırken uyumluluk sorunları ortaya çıkabilir.
+
+Bakım maliyeti: Tablolardaki değişiklikleri otomatik günceleyemediği için ek bir bakım süreci gerekir .
+
+
+
+*Trigger olumsuz etkileri
+
+Performans: Trigger'lar, her tetiklendiğinde ek işlem yapar, bu da performansı olumsuz etkileyebilir
+Özellikle yoğun kullanılan tablolarda performans sorunlarına neden olabilir.
+
+
+################################################################################################################################
+
+
+Pythonda Stored Procedure içerisinde bunu nasıl çağırabiliriz ? / nasıl bir mantık kurulabilir ? 
+
+
+
+import pyodbc
+
+# Veritabanı bağlantısını kur
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER=server_name;DATABASE=database_name;UID=username;PWD=password')
+
+# Cursor oluştur
+cursor = conn.cursor()
+
+# Stored procedure'ı çağır
+cursor.execute("{CALL my_stored_procedure}")
+
+# Sonuçları al
+results = cursor.fetchall()
+
+# Bağlantıyı kapat
+cursor.close()
+conn.close()
+
+
+##################################################################################################################################
+
+
+Pythonda Trigger içerisinde bunu nasıl çağırabiliriz ? / nasıl bir mantık kurulabilir ?
+
+
+import pyodbc
+
+# Veritabanı bağlantısını kur
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER=server_name;DATABASE=database_name;UID=username;PWD=password')
+
+# Cursor oluştur
+cursor = conn.cursor()
+
+# Veri ekle
+cursor.execute("INSERT INTO my_table (column1, column2) VALUES (?, ?)", (value1, value2))
+
+# Değişiklikleri onayla
+conn.commit()
+
+# Bağlantıyı kapat
+cursor.close()
+conn.close()
